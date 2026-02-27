@@ -1,0 +1,131 @@
+<div class="register-container">
+  <div class="register-card">
+    <h2 class="register-title">Create Account</h2>
+    <p class="register-subtitle">Join us today!</p>
+
+    <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label class="register-label">Full Name</label>
+        <input class="register-input" type="text" placeholder="John Doe" formControlName="name" />
+
+        @if (name?.touched && name?.invalid) {
+          @if (name?.errors?.['required']) {
+            <span class="errFullNameMsg">Please enter name</span>
+          }
+          @if (name?.errors?.['pattern']) {
+            <span class="errFullNameMsg">
+              Name must start with a letter and contain only letters/spaces
+            </span>
+          }
+        }
+      </div>
+
+      <div>
+        <label class="register-label">Email</label>
+        <input
+          class="register-input"
+          type="email"
+          placeholder="you@example.com"
+          formControlName="email"
+        />
+
+        @if (email?.touched && email?.invalid) {
+          @if (email?.errors?.['required']) {
+            <span class="errEmailMsg">Please enter email</span>
+          }
+          @if (email?.errors?.['email']) {
+            <span class="errEmailMsg">Please enter valid email</span>
+          }
+        }
+      </div>
+
+      <div>
+        <label class="register-label">Age</label>
+        <input
+          class="register-input"
+          type="number"
+          placeholder="Enter your age"
+          formControlName="age"
+        />
+
+        @if (age?.touched && age?.invalid) {
+          @if (age?.errors?.['required']) {
+            <span class="errAgeMsg">Please enter age</span>
+          }
+          @if (age?.errors?.['pattern']) {
+            <span class="errAgeMsg">Age must be a number</span>
+          }
+          @if (age?.errors?.['min']) {
+            <span class="errAgeMsg">Minimum age is 18</span>
+          }
+          @if (age?.errors?.['max']) {
+            <span class="errAgeMsg">Age must be below 100</span>
+          }
+        }
+      </div>
+
+      <div>
+        <label class="register-label">Password</label>
+        <input
+          class="register-input"
+          [type]="passwordType()"
+          placeholder="8-15 chars, 1 capital, 1 symbol"
+          formControlName="password"
+        />
+
+        @if (password?.touched && password?.invalid) {
+          @if (password?.errors?.['required']) {
+            <span class="errPasswordMsg">Please enter password</span>
+          }
+          @if (password?.errors?.['minlength']) {
+            <span class="errPasswordMsg">Password too short</span>
+          }
+          @if (password?.errors?.['maxlength']) {
+            <span class="errPasswordMsg">Password too long</span>
+          }
+          @if (password?.errors?.['pattern']) {
+            <span class="errPasswordMsg"> Must contain 1 uppercase, 1 lowercase and 1 symbol </span>
+          }
+        }
+      </div>
+
+      <div>
+        <label class="register-label">Confirm Password</label>
+        <input
+          class="register-input"
+          [type]="passwordType()"
+          placeholder="Re-enter password"
+          formControlName="confirmPassword"
+        />
+
+        @if (confirmPassword?.touched && confirmPassword?.invalid) {
+          @if (confirmPassword?.errors?.['required']) {
+            <span class="errConfirmPasswordMsg"> Please confirm password </span>
+          }
+        }
+
+        @if (registerForm.errors?.['passwordMismatch'] && confirmPassword?.touched) {
+          <span class="errConfirmPasswordMsg"> Passwords do not match </span>
+        }
+      </div>
+
+      <div class="register-label-checkbox-div">
+        <label class="register-label-checkbox">
+          <input class="register-input-checkbox" type="checkbox" (click)="togglePassword()" />
+          Show Password
+        </label>
+      </div>
+
+      <div class="register-btn-div">
+        <button class="register-btn" type="submit">Register</button>
+      </div>
+
+      <div>
+        <p class="extra">
+          Already have an account?
+          <a class="login-link" routerLink="/login"> Sign-In </a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

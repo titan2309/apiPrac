@@ -1,0 +1,60 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="login-title">Welcome Back!</h2>
+    <p class="login-subtitle">Please log-In!</p>
+
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label class="login-label">Username</label>
+        <input
+          class="login-input"
+          type="email"
+          placeholder="you@example.com"
+          formControlName="email"
+        />
+        @if (email?.errors && email?.touched) {
+          @if (email?.hasError('required')) {
+            <span class="errEmailMsg">Email is Required</span>
+          }
+          @if (email?.hasError('email')) {
+            <span class="errEmailMsg">Email Not Valid</span>
+          }
+        }
+      </div>
+      <div>
+        <label class="login-label">Password</label>
+        <input
+          class="login-input"
+          [type]="passwordType()"
+          placeholder="Password should be 8 characters long"
+          formControlName="password"
+        />
+        @if (password?.errors && password?.touched) {
+          @if (password?.hasError('required')) {
+            <span class="errPasswordMsg">Password is Required</span>
+          }
+          @if (password?.hasError('minlength')) {
+            <span class="errPasswordMsg">Password is too short</span>
+          }
+          @if (password?.hasError('maxlength')) {
+            <span class="errPasswordMsg">Password is too long</span>
+          }
+        }
+      </div>
+      <div class="login-label-checkbox-div">
+        <label class="login-label-checkbox"
+          ><input class="login-input-checkbox" type="checkbox" (click)="togglePassword()" />Show
+          Password</label
+        >
+      </div>
+      <div class="login-btn-div">
+        <button class="login-btn" type="submit">Sign-In</button>
+      </div>
+      <div>
+        <p class="extra">
+          Not registered yet? <a class="register-link" routerLink="/register">Register</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

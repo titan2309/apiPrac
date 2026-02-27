@@ -1,0 +1,60 @@
+@reference "tailwindcss";
+
+@layer components {
+  .login-container {
+    @apply min-h-screen flex items-center justify-center bg-linear-to-bl from-gray-700 to-gray-900 px-4;
+  }
+
+  .login-card {
+    @apply w-full max-w-md bg-black/45 backdrop-blur rounded-2xl shadow-2xl p-8;
+  }
+
+  .login-title {
+    @apply text-3xl font-bold text-white text-center mb-2;
+  }
+
+  .login-subtitle {
+    @apply text-gray-400 text-center mb-2;
+  }
+
+  .login-label {
+    @apply block text-sm mt-1 font-medium text-white mb-2;
+  }
+
+  .login-input {
+    @apply w-full border border-gray-500 rounded-lg p-2 text-white placeholder-gray-300 mb-1 focus:outline-none focus:ring-2 focus:ring-green-500 transition;
+  }
+
+  .login-label-checkbox {
+    @apply mt-1;
+  }
+
+  .login-input-checkbox {
+    @apply mt-1 rounded border-gray-600;
+  }
+
+  .login-label-checkbox {
+    @apply text-gray-400 flex items-center gap-2;
+  }
+
+  .login-btn-div {
+    @apply flex justify-center;
+  }
+
+  .login-btn {
+    @apply w-full mt-2 p-2 rounded-lg bg-green-600 text-black font-semibold hover:bg-green-500 transition-all duration-150 cursor-pointer;
+  }
+
+  .extra {
+    @apply mt-2 text-gray-400 text-center;
+  }
+
+  .errPasswordMsg,
+  .errEmailMsg {
+    @apply text-sm text-red-400 font-medium;
+  }
+
+  .register-link {
+    @apply text-green-600 hover:text-green-400 transition;
+  }
+}
