@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Users } from './user-data-type';
 
 @Injectable({
@@ -8,7 +7,7 @@ import { Users } from './user-data-type';
 })
 export class UserService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/users';
+  private apiUrl = 'http://localhost:8080/api/users/all';
 
   getAllUsers() {
     return this.http.get<Users[]>(this.apiUrl);

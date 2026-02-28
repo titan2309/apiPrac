@@ -1,9 +1,7 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { UserService } from '../../services/user/user';
 import { Users } from '../../services/user/user-data-type';
-import { TitleCasePipe } from '@angular/common';
 import { DeleteUserService } from '../../services/deleteUser/delete-user-service';
-import { ViewProfileService } from '../../services/viewProfile/view-profile-service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -19,17 +17,30 @@ export class UserList {
 
   userData = signal<Users[]>([]);
   loading = signal(true);
+  refresh = signal(0);
 
-  ngOnInit() {
-    this.userService.getAllUsers().subscribe({
-      next: (res) => {
-        this.userData.set(res);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.loading.set(false);
-      },
+  constructor() {
+    effect(() => {
+      this.refresh();
+
+      this.userService.getAllUsers().subscribe({
+        next: (res) => {
+          this.userData.set(res);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.loading.set(false);
+        },
+      });
     });
+  }
+
+  toLogin() {
+    this.router.navigate(['/login']);
+  }
+
+  toAddUser() {
+    this.router.navigate(['/register']);
   }
 
   viewProfile(id: string) {
@@ -42,11 +53,12 @@ export class UserList {
     }
 
     this.deleteUserService.deleteUser(id).subscribe({
-      next: (res) => {
+      next: () => {
         this.userData.update((users) => users.filter((user) => user.id.toString() !== id));
         alert('User Deleted Successfully');
+        this.refresh.update((count) => count + 1);
       },
-      error: (err) => {
+      error: () => {
         console.log('Failed to delete User');
       },
     });

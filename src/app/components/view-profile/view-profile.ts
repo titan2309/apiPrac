@@ -1,11 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewProfileService } from '../../services/viewProfile/view-profile-service';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UpdateUserService } from '../../services/updateUser/update-user-service';
 
 @Component({
   selector: 'app-view-profile',
+  standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './view-profile.html',
   styleUrl: './view-profile.css',
@@ -15,17 +16,24 @@ export class ViewProfile {
   private router = inject(Router);
   private viewProfileService = inject(ViewProfileService);
   private updateUserService = inject(UpdateUserService);
-  private formBuild = inject(FormBuilder);
+  private fb = inject(FormBuilder);
 
   loading = signal(true);
-  editForm = this.formBuild.group({
-    name: [''],
-    age: [''],
-    email: [''],
-    password: [''],
+  passwordType = signal<'password' | 'text'>('password');
+
+  togglePassword() {
+    this.passwordType.set(this.passwordType() === 'password' ? 'text' : 'password');
+  }
+
+  editForm = this.fb.group({
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    role: ['', Validators.required],
+    password: ['', Validators.required],
   });
 
-  ngOnInit() {
+  constructor() {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (!id) {
@@ -35,11 +43,17 @@ export class ViewProfile {
 
     this.viewProfileService.getUserById(id).subscribe({
       next: (res) => {
-        this.editForm.patchValue(res);
+        this.editForm.patchValue({
+          firstName: res.firstName,
+          lastName: res.lastName,
+          email: res.email,
+          role: res.role,
+          password: res.password,
+        });
+
         this.loading.set(false);
-        console.log(res);
       },
-      error: (err) => {
+      error: () => {
         this.loading.set(false);
         this.router.navigate(['']);
       },
@@ -48,21 +62,17 @@ export class ViewProfile {
 
   updateProfile() {
     const id = this.route.snapshot.paramMap.get('id');
+    if (!id || this.editForm.invalid) return;
 
-    if (!id) {
-      return;
-    }
+    const updatedData = { ...this.editForm.value };
 
-    if (this.editForm.invalid) {
-      return;
-    }
-
-    this.updateUserService.updateUser(id, this.editForm.value).subscribe({
-      next: (res) => {
+    this.updateUserService.updateUser(id, updatedData).subscribe({
+      next: () => {
         alert('Profile Updated Successfully');
+        this.router.navigate(['']);
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
   }

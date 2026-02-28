@@ -8,13 +8,12 @@ import { ApiPathConfig } from '../core/api-path-config';
 export class UpdateUserService {
   private http = inject(HttpClient);
   private apiUrl = inject(ApiPathConfig);
-  // userUpdateData!
 
   getUserById(id: string | number) {
-    return this.http.get<any>(`${this.apiUrl.url}/users/${id}`);
+    return this.http.get<any>(`${this.apiUrl.url}/${id}`);
   }
 
   updateUser(id: string | number, userData: any) {
-    return this.http.put<any>(`${this.apiUrl.url}/users/${id}`, userData);
+    return this.http.put<any>(`${this.apiUrl.url}/${id}`, userData);
   }
 }

@@ -9,7 +9,6 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { RegisterService } from '../../services/register/register';
 
 @Component({
@@ -31,25 +30,40 @@ export class Register {
 
   registerForm = new FormGroup(
     {
-      name: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)]),
+      firstName: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)],
+      }),
 
-      email: new FormControl('', [Validators.required, Validators.email]),
+      lastName: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.pattern(/^[A-Za-z][A-Za-z\s]*$/)],
+      }),
 
-      age: new FormControl('', [
-        Validators.required,
-        Validators.pattern(/^\d+$/),
-        Validators.min(18),
-        Validators.max(100),
-      ]),
+      email: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.email],
+      }),
 
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(15),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,15}$/),
-      ]),
+      role: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
 
-      confirmPassword: new FormControl('', [Validators.required]),
+      password: new FormControl('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(15),
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,15}$/),
+        ],
+      }),
+
+      confirmPassword: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
     },
     { validators: this.passwordMatchValidator },
   );
@@ -65,16 +79,20 @@ export class Register {
     return null;
   }
 
-  get name() {
-    return this.registerForm.get('name');
+  get firstName() {
+    return this.registerForm.get('firstName');
+  }
+
+  get lastName() {
+    return this.registerForm.get('lastName');
   }
 
   get email() {
     return this.registerForm.get('email');
   }
 
-  get age() {
-    return this.registerForm.get('age');
+  get role() {
+    return this.registerForm.get('role');
   }
 
   get password() {
@@ -94,19 +112,20 @@ export class Register {
     const formValue = this.registerForm.getRawValue();
 
     const userData = {
-      name: formValue.name,
-      age: formValue.age,
+      firstName: formValue.firstName,
+      lastName: formValue.lastName,
       email: formValue.email,
-      passowrd: formValue.password,
+      password: formValue.password,
+      role: formValue.role,
     };
 
-    this.registerService.register(userData as any).subscribe({
+    this.registerService.register(userData).subscribe({
       next: (res) => {
         console.log(res);
         this.router.navigate(['']);
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
   }

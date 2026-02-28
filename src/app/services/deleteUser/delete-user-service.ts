@@ -10,6 +10,6 @@ export class DeleteUserService {
   private apiUrl = inject(ApiPathConfig);
 
   deleteUser(id: string) {
-    return this.http.delete(`${this.apiUrl.url}/users/${id}`);
+    return this.http.delete(`${this.apiUrl.url}/${id}`);
   }
 }

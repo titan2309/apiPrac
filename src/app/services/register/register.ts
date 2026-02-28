@@ -3,11 +3,11 @@ import { inject, Injectable, signal } from '@angular/core';
 import { ApiPathConfig } from '../core/api-path-config';
 
 export interface UserRegister {
-  id?: number;
-  name: string;
-  age: number;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
+  role: string;
 }
 
 @Injectable({
@@ -20,6 +20,6 @@ export class RegisterService {
   user = signal<UserRegister | undefined>(undefined);
 
   register(userData: UserRegister) {
-    return this.http.post<any>(`${this.apiUrl.url}/users`, userData);
+    return this.http.post<any>(`${this.apiUrl.url}/createUser`, userData);
   }
 }

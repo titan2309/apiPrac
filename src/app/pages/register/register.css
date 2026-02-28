@@ -25,6 +25,10 @@
     @apply w-full border border-gray-500 rounded-lg p-2 text-white placeholder-gray-300 mb-1 focus:outline-none focus:ring-2 focus:ring-green-500 transition;
   }
 
+  .register-input-role {
+    @apply bg-gray-900;
+  }
+
   .register-label-checkbox-div {
     @apply mt-1;
   }
@@ -48,7 +52,7 @@
   .errFullNameMsg,
   .errPasswordMsg,
   .errEmailMsg,
-  .errAgeMsg,
+  .errRoleMsg,
   .errConfirmPasswordMsg {
     @apply text-sm text-red-400 font-medium;
   }

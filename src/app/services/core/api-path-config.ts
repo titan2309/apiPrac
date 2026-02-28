@@ -4,7 +4,7 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class ApiPathConfig {
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = 'http://localhost:8080/api/users';
 
   readonly url = this.apiUrl;
 }
