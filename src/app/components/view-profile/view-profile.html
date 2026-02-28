@@ -4,39 +4,54 @@
   @if (loading()) {
     <div class="text-gray-300 text-lg">Loading profile...</div>
   } @else {
-    @if (userData()) {
-      <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md">
-        <div class="flex justify-center mb-6">
-          <div
-            class="w-24 h-24 rounded-full bg-indigo-100 text-indigo-600 text-3xl font-bold flex items-center justify-center"
-          >
-            {{ userData().name.charAt(0) + userData().name.trim().split(' ').at(-1)?.charAt(0) }}
-          </div>
-        </div>
-        <div class="space-y-4 text-center">
-          <h2 class="text-2xl font-bold text-gray-800">
-            {{ userData().name }}
-          </h2>
+    <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md space-y-6">
+      <h2 class="text-2xl font-bold text-center text-gray-800">Edit Profile</h2>
 
-          <p class="text-gray-600">Age: {{ userData().age }}</p>
+      <form [formGroup]="editForm" (ngSubmit)="updateProfile()" class="space-y-4">
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="Name"
+          class="w-full border rounded-lg p-3"
+        />
 
-          <p class="text-gray-600">
-            {{ userData().email }}
-          </p>
+        <input
+          type="number"
+          formControlName="age"
+          placeholder="Age"
+          class="w-full border rounded-lg p-3"
+        />
 
-          <p class="text-gray-400 text-sm">Password: ••••••••</p>
-        </div>
-        <div class="mt-8 flex justify-center">
-          <button
-            (click)="goBack()"
-            class="px-6 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition"
-          >
-            Back
-          </button>
-        </div>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Email"
+          class="w-full border rounded-lg p-3"
+        />
+
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Password"
+          class="w-full border rounded-lg p-3"
+        />
+
+        <button
+          type="submit"
+          class="w-full bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 transition"
+        >
+          Update Profile
+        </button>
+      </form>
+
+      <div class="flex justify-center">
+        <button
+          (click)="goBack()"
+          class="px-6 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition"
+        >
+          Back
+        </button>
       </div>
-    } @else {
-      <div class="text-gray-400">User not found.</div>
-    }
+    </div>
   }
 </div>
